@@ -1,0 +1,27 @@
+@import "libs/_media"
+@import "libs/_funcs"
+@import "libs/_mixins"
+@import "libs/_reset"
+@import "_variables"
+
+@import "typography"
+
+*,
+*::after,
+*::before
+	box-sizing: border-box
+	user-select: none
+
+
+html,
+body
+	height: 100%
+
+body
+	margin: 0
+	padding: 0
+	font-family: "terrafont", Helvetica, sans-serif
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing: grayscale
+
+@import "../pages/MainPage"

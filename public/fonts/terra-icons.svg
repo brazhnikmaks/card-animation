@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2019 by original authors @ fontello.com</metadata>
+<defs>
+<font id="terra-icons" horiz-adv-x="1000" >
+<font-face font-family="terra-icons" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="arrow-left" unicode="&#xe800;" d="M2 342c1-3 3-5 5-6l180-181c8-8 21-8 29 0s8 21 0 29l-147 147h918c11 0 21 9 21 21s-10 21-21 21h-918l147 146c8 8 8 21 0 29s-21 9-29 0l-180-183c-7-7-9-15-5-23z" horiz-adv-x="1008" />
+
+<glyph glyph-name="arrow-right" unicode="&#xe801;" d="M1007 358c-2 3-4 5-5 7l-181 180c-8 8-21 8-29 0s-8-21 0-29l147-147h-918c-11 2-21-8-21-19s10-21 21-21h918l-147-147c-8-8-8-21 0-29s21-8 29 0l181 181c6 8 8 16 5 24z" horiz-adv-x="1008" />
+</font>
+</defs>
+</svg>
