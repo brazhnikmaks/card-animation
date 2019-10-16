@@ -5,7 +5,9 @@ export default function Card(props) {
   const cardEl = useRef(null);
 
   useEffect(() => {
-    Scene.init(cardEl.current);
+    Scene.init({
+      container: cardEl.current
+    });
   }, []);
 
   return <div ref={cardEl} className="card-scene"></div>;
