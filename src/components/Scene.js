@@ -220,7 +220,7 @@ const Scene = (function() {
         map: { value: WebGL.textures["card-front"] },
         globalAlphaSpeed: { value: 1 },
         opacity: { value: 1 },
-        displacement: { value: 0 },
+        displacement: { value: 0.5 },
         uPerspectiveTopLeft: { value: new THREE.Vector3() },
         uPerspectiveTopRight: { value: new THREE.Vector3() },
         uPerspectiveBottomLeft: { value: new THREE.Vector3() },
@@ -237,7 +237,7 @@ const Scene = (function() {
       uniforms: {
         map: { value: WebGL.textures["card-back"] },
         opacity: { value: 1 },
-        displacement: { value: 0 },
+        displacement: { value: 0.5 },
         uPerspectiveTopLeft: { value: new THREE.Vector3() },
         uPerspectiveTopRight: { value: new THREE.Vector3() },
         uPerspectiveBottomLeft: { value: new THREE.Vector3() },
@@ -260,12 +260,24 @@ const Scene = (function() {
     WebGL.card.back = new THREE.Mesh(geometry, backMaterial);
     WebGL.card.container.add(WebGL.card.back);
 
+    WebGL.card.front.position.z = 2;
+    WebGL.card.back.position.z = 2;
+
     const scaling = WebGL.card.height / WebGL.card.width;
 
     WebGL.card.front.scale.set(3, 3 * scaling, 1);
     WebGL.card.back.scale.copy(WebGL.card.front.scale);
 
     WebGL.scene.add(WebGL.card.container);
+
+    WebGL.scene.add(
+      new THREE.Mesh(
+        new THREE.SphereBufferGeometry(2, 32, 32),
+        new THREE.MeshLambertMaterial({
+          color: 0x00ff40
+        })
+      )
+    );
 
     const parameters = {
       rotateX: 0,
@@ -294,12 +306,12 @@ const Scene = (function() {
   }
 
   function update() {
-    // WebGL.card.container.rotation.y -= 0.02;
+    WebGL.card.container.rotation.y -= 0.05;
     if (Mouse.moved) {
       updateCardRotate();
     }
 
-    updateCardScroll();
+    // updateCardScroll();
 
     WebGL.renderer.render(WebGL.scene, WebGL.camera);
     requestAnimationFrame(update);
@@ -314,14 +326,14 @@ const Scene = (function() {
       WebGL.card.container.rotation.x,
       Mouse.dy
     );
-    WebGL.card.front.material.uniforms.displacement.value = lerp(
-      WebGL.card.front.material.uniforms.displacement.value,
-      Mouse.dy * 1.5
-    );
-    WebGL.card.back.material.uniforms.displacement.value = lerp(
-      WebGL.card.back.material.uniforms.displacement.value,
-      Mouse.dy * 1.5
-    );
+    // WebGL.card.front.material.uniforms.displacement.value = lerp(
+    //   WebGL.card.front.material.uniforms.displacement.value,
+    //   Mouse.dy * 1.5
+    // );
+    // WebGL.card.back.material.uniforms.displacement.value = lerp(
+    //   WebGL.card.back.material.uniforms.displacement.value,
+    //   Mouse.dy * 1.5
+    // );
   }
 
   function updateCardScroll() {
@@ -380,9 +392,9 @@ const Scene = (function() {
     document.addEventListener("mousemove", e => {
       onMouseMove(e);
     });
-    window.addEventListener("scroll", e => {
-      onScroll(e);
-    });
+    // window.addEventListener("scroll", e => {
+    //   onScroll(e);
+    // });
   }
 
   return {
