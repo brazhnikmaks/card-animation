@@ -1,5 +1,45 @@
-.card
+
+.card-wrap
 	width: 215px
 	height: 330px
-	background: url(../img/card-front-sq.png) no-repeat center / 100% 100%
 	position: absolute
+	top: 15%
+	left: 45%
+	transform-style: preserve-3d
+	transform: rotateY(40deg)
+
+.card-pos
+	width: 100%
+	height: 100%
+	position: absolute
+	top: 0
+	left: 0
+	transform-style: preserve-3d
+
+.card
+	position: absolute;
+	left: 0
+	top: 0
+	width: 215px
+	height: 330px
+	transform: translateZ(-200px)
+	transform-style: preserve-3d
+
+.front
+	position: absolute
+	left: 0
+	top: 0
+	right: 0
+	bottom: 0
+	background: url(../img/card-front-sq.png) no-repeat center / 100% 100%
+	backface-visibility: hidden
+
+.back
+	position: absolute
+	left: 0
+	top: 0
+	right: 0
+	bottom: 0
+	background: url(../img/card-back-sq.png) no-repeat center / 100% 100%
+	backface-visibility: hidden
+	transform: rotateY(180deg)
