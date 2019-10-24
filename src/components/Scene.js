@@ -164,8 +164,8 @@ const Scene = (function() {
     WebGL.scene = new THREE.Scene();
 
     //axis scene
-    var axesHelper = new THREE.AxesHelper(5);
-    WebGL.scene.add(axesHelper);
+    // var axesHelper = new THREE.AxesHelper(5);
+    // WebGL.scene.add(axesHelper);
 
     //load models
     loadComponents(() => {
@@ -178,10 +178,8 @@ const Scene = (function() {
     WebGL.textureLoader = new THREE.TextureLoader();
 
     const textures = [
-      { path: `/card-front-sq.png`, name: "card-front" },
-      { path: `/card-shadow.png`, name: "card-shadow" },
-      { path: `/card-back-sq.png`, name: "card-back" },
-      { path: `/card-front-black-shadow.png`, name: "card-front-black" }
+      { path: `/CA.png`, name: "CA" },
+      { path: `/product.png`, name: "product" }
     ];
 
     Promise.all(textures.map(texture => loadTexture(texture))).then(() => {
@@ -206,7 +204,7 @@ const Scene = (function() {
   }
 
   function createCard() {
-    WebGL.card = {
+    WebGL.fly = {
       width: 1614,
       height: 1024
     };
@@ -217,7 +215,7 @@ const Scene = (function() {
       vertexShader: vertexShader$1,
       fragmentShader: fragmentShader$1,
       uniforms: {
-        map: { value: WebGL.textures["card-front"] },
+        map: { value: WebGL.textures["CA"] },
         globalAlphaSpeed: { value: 1 },
         opacity: { value: 1 },
         displacement: { value: 0.5 },
@@ -227,86 +225,78 @@ const Scene = (function() {
         uPerspectiveBottomRight: { value: new THREE.Vector3() },
         globalOpacity: { value: 1 }
       },
-      transparent: true
-      // wireframe: true
+      transparent: true,
+      side: THREE.DoubleSide
     });
 
-    const backMaterial = new THREE.ShaderMaterial({
+    const productMaterial = new THREE.ShaderMaterial({
       vertexShader: vertexShader$1,
       fragmentShader: fragmentShader$1,
       uniforms: {
-        map: { value: WebGL.textures["card-back"] },
+        map: { value: WebGL.textures["product"] },
+        globalAlphaSpeed: { value: 1 },
         opacity: { value: 1 },
-        displacement: { value: 0.5 },
+        displacement: { value: 0 },
         uPerspectiveTopLeft: { value: new THREE.Vector3() },
         uPerspectiveTopRight: { value: new THREE.Vector3() },
         uPerspectiveBottomLeft: { value: new THREE.Vector3() },
         uPerspectiveBottomRight: { value: new THREE.Vector3() },
-        globalOpacity: { value: 1 },
-        globalAlphaSpeed: { value: 1 }
+        globalOpacity: { value: 1 }
       },
       transparent: true,
-      side: THREE.BackSide
+      side: THREE.DoubleSide
     });
 
-    WebGL.card.container = new THREE.Object3D();
-    WebGL.card.axis = new THREE.Object3D();
+    WebGL.fly.container = new THREE.Object3D();
+    WebGL.fly.axis = new THREE.Object3D();
 
-    WebGL.card.axis.add(WebGL.card.container);
+    WebGL.fly.axis.add(WebGL.fly.container);
 
-    WebGL.card.front = new THREE.Mesh(geometry, frontMaterial);
-    WebGL.card.container.add(WebGL.card.front);
+    WebGL.fly.front = new THREE.Mesh(geometry, frontMaterial);
+    WebGL.fly.container.add(WebGL.fly.front);
 
-    WebGL.card.back = new THREE.Mesh(geometry, backMaterial);
-    WebGL.card.container.add(WebGL.card.back);
+    WebGL.fly.front.position.z = 1;
 
-    WebGL.card.front.position.z = 2;
-    WebGL.card.back.position.z = 2;
+    const scaling = WebGL.fly.height / WebGL.fly.width;
 
-    const scaling = WebGL.card.height / WebGL.card.width;
+    WebGL.fly.front.scale.set(2, 2 * scaling, 1);
 
-    WebGL.card.front.scale.set(3, 3 * scaling, 1);
-    WebGL.card.back.scale.copy(WebGL.card.front.scale);
+    WebGL.scene.add(WebGL.fly.container);
 
-    WebGL.scene.add(WebGL.card.container);
+    WebGL.fly.product = new THREE.Mesh(geometry, productMaterial);
+    WebGL.fly.product.rotation.z = Math.PI / 2;
+    WebGL.fly.product.scale.set(4, 3 * scaling, 1);
 
-    WebGL.scene.add(
-      new THREE.Mesh(
-        new THREE.SphereBufferGeometry(2, 32, 32),
-        new THREE.MeshLambertMaterial({
-          color: 0x00ff40
-        })
-      )
-    );
+    WebGL.scene.add(WebGL.fly.product);
 
-    const parameters = {
-      rotateX: 0,
-      rotateY: 0
-    };
+    // const parameters = {
+    //   rotateX: 0,
+    //   rotateY: 0
+    // };
 
-    const gui = new dat.GUI();
+    // const gui = new dat.GUI();
 
-    const folder1 = gui.addFolder("Rotate");
+    // const folder1 = gui.addFolder("Rotate");
 
-    folder1
-      .add(parameters, "rotateX")
-      .name("Rotate X")
-      .step(0.02)
-      .onChange(value => {
-        WebGL.card.container.rotation.x = parseFloat(value);
-      });
+    // folder1
+    //   .add(parameters, "rotateX")
+    //   .name("Rotate X")
+    //   .step(0.02)
+    //   .onChange(value => {
+    //     WebGL.fly.container.rotation.x = parseFloat(value);
+    //   });
 
-    folder1
-      .add(parameters, "rotateY")
-      .name("Rotate Y")
-      .step(0.02)
-      .onChange(value => {
-        WebGL.card.container.rotation.y = parseFloat(value);
-      });
+    // folder1
+    //   .add(parameters, "rotateY")
+    //   .name("Rotate Y")
+    //   .step(0.02)
+    //   .onChange(value => {
+    //     WebGL.fly.container.rotation.y = parseFloat(value);
+    //   });
   }
 
   function update() {
-    WebGL.card.container.rotation.y -= 0.05;
+    WebGL.fly.container.rotation.y -= 0.05;
     if (Mouse.moved) {
       updateCardRotate();
     }
@@ -318,56 +308,41 @@ const Scene = (function() {
   }
 
   function updateCardRotate() {
-    WebGL.card.container.rotation.y = lerp(
-      WebGL.card.container.rotation.y,
-      Mouse.dx
-    );
-    WebGL.card.container.rotation.x = lerp(
-      WebGL.card.container.rotation.x,
-      Mouse.dy
-    );
-    // WebGL.card.front.material.uniforms.displacement.value = lerp(
-    //   WebGL.card.front.material.uniforms.displacement.value,
+    WebGL.fly.front.rotation.y = lerp(WebGL.fly.front.rotation.y, Mouse.dx);
+    WebGL.fly.front.rotation.x = lerp(WebGL.fly.front.rotation.x, Mouse.dy);
+    // WebGL.fly.front.material.uniforms.displacement.value = lerp(
+    //   WebGL.fly.front.material.uniforms.displacement.value,
     //   Mouse.dy * 1.5
     // );
-    // WebGL.card.back.material.uniforms.displacement.value = lerp(
-    //   WebGL.card.back.material.uniforms.displacement.value,
+    // WebGL.fly.back.material.uniforms.displacement.value = lerp(
+    //   WebGL.fly.back.material.uniforms.displacement.value,
     //   Mouse.dy * 1.5
     // );
   }
 
   function updateCardScroll() {
     if (Scroll.dy < 0.5) {
-      WebGL.card.container.rotation.z = lerp(
-        WebGL.card.container.rotation.z,
+      WebGL.fly.container.rotation.z = lerp(
+        WebGL.fly.container.rotation.z,
         -Scroll.dy * 15
       );
     } else {
-      WebGL.card.container.rotation.z = lerp(
-        WebGL.card.container.rotation.z,
+      WebGL.fly.container.rotation.z = lerp(
+        WebGL.fly.container.rotation.z,
         Scroll.dy * 15
       );
     }
     if (Scroll.dy < 0.5) {
-      WebGL.card.container.position.y = lerp(
-        WebGL.card.container.position.y,
+      WebGL.fly.container.position.y = lerp(
+        WebGL.fly.container.position.y,
         -Scroll.dy * 10
       );
-      WebGL.card.container.rotation.y -= 0.02;
+      WebGL.fly.front.rotation.y -= 0.02;
     } else if (Scroll.dy > 0.9) {
-      WebGL.card.container.position.x = lerp(
-        WebGL.card.container.position.x,
-        10
-      );
+      WebGL.fly.container.position.x = lerp(WebGL.fly.container.position.x, 10);
     } else {
-      WebGL.card.container.position.y = lerp(
-        WebGL.card.container.position.y,
-        0
-      );
-      WebGL.card.container.position.x = lerp(
-        WebGL.card.container.position.x,
-        0
-      );
+      WebGL.fly.container.position.y = lerp(WebGL.fly.container.position.y, 0);
+      WebGL.fly.container.position.x = lerp(WebGL.fly.container.position.x, 0);
     }
   }
 
@@ -391,6 +366,11 @@ const Scene = (function() {
   function events() {
     document.addEventListener("mousemove", e => {
       onMouseMove(e);
+    });
+    document.addEventListener("click", e => {
+      WebGL.fly.container.scale.x += 0.05;
+      WebGL.fly.container.scale.y += 0.05;
+      WebGL.fly.container.scale.z += 0.05;
     });
     // window.addEventListener("scroll", e => {
     //   onScroll(e);
