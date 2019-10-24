@@ -306,12 +306,11 @@ const Scene = (function() {
   }
 
   function update() {
-    WebGL.card.container.rotation.y -= 0.05;
     if (Mouse.moved) {
       updateCardRotate();
     }
 
-    // updateCardScroll();
+    updateCardScroll();
 
     WebGL.renderer.render(WebGL.scene, WebGL.camera);
     requestAnimationFrame(update);
@@ -392,9 +391,9 @@ const Scene = (function() {
     document.addEventListener("mousemove", e => {
       onMouseMove(e);
     });
-    // window.addEventListener("scroll", e => {
-    //   onScroll(e);
-    // });
+    window.addEventListener("scroll", e => {
+      onScroll(e);
+    });
   }
 
   return {
