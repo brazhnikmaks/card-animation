@@ -15,7 +15,7 @@
     "react-scripts": "3.0.1",
     "react-transition-group": "^4.2.2",
     "redux": "^4.0.4",
-    "three": "^0.107.0",
+    "three": "^0.125.0",
     "tiny-slider": "^2.9.2"
   },
   "scripts": {
